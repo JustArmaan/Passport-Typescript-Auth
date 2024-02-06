@@ -1,8 +1,21 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
-import { PassportStrategy } from '../../interfaces/index';
+import {
+  getUserByEmailIdAndPassword,
+  getUserById,
+} from "../../controllers/userController";
+import { PassportStrategy } from "../../interfaces/index";
 
+declare global {
+  namespace Express {
+    interface User {
+      id: number;
+      name: string;
+      email: string;
+      password: string;
+    }
+  }
+}
 const localStrategy = new LocalStrategy(
   {
     usernameField: "email",
@@ -19,16 +32,22 @@ const localStrategy = new LocalStrategy(
 );
 
 /*
-FIX ME (types) 😭
+FIX ME (types) Done
 */
-passport.serializeUser(function (user: any, done: any) {
+passport.serializeUser(function (
+  user: Express.User,
+  done: (err: any, id: number) => void
+) {
   done(null, user.id);
 });
 
 /*
-FIX ME (types) 😭
+FIX ME (types) Done?
 */
-passport.deserializeUser(function (id: any, done: any) {
+passport.deserializeUser(function (
+  id: number,
+  done: (err: any, user?: Express.User | false | null) => void
+) {
   let user = getUserById(id);
   if (user) {
     done(null, user);
@@ -38,7 +57,7 @@ passport.deserializeUser(function (id: any, done: any) {
 });
 
 const passportLocalStrategy: PassportStrategy = {
-  name: 'local',
+  name: "local",
   strategy: localStrategy,
 };
 
