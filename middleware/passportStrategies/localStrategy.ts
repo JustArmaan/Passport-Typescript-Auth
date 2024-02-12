@@ -13,6 +13,7 @@ declare global {
       name: string;
       email: string;
       password: string;
+      role: string;
     }
   }
 }
@@ -22,12 +23,14 @@ const localStrategy = new LocalStrategy(
     passwordField: "password",
   },
   (email, password, done) => {
-    const user = getUserByEmailIdAndPassword(email, password);
-    return user
-      ? done(null, user)
-      : done(null, false, {
-          message: "Your login details are not valid. Please try again",
+    try {
+      const user = getUserByEmailIdAndPassword(email, password);
+        done(null, user!);
+    } catch(error:any) {
+      done(null, false, {
+          message: error.message,
         });
+    }
   }
 );
 
@@ -36,7 +39,7 @@ FIX ME (types) Done
 */
 passport.serializeUser(function (
   user: Express.User,
-  done: (err: any, id: number) => void
+  done
 ) {
   done(null, user.id);
 });

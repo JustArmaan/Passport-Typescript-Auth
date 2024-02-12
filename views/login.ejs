@@ -7,6 +7,7 @@
       <h2>Login</h2>
       <form action="/auth/login" method="POST">
         <div class="form-group">
+          <p><%= messages[messages.length-1] %></p>
           <label for="email">Email</label>
           <input
             type="email"
@@ -27,6 +28,10 @@
           />
         </div>
         <button type="submit" class="btn btn-primary btn-block">Login</button>
+      </form>
+      <p>OR</p>
+      <form id="githubLoginForm" action="/auth/github/login" method="POST">
+      <button type="submit" class="btn btn-primary btn-block" style="background-color: rgb(0, 0, 0); border: 1px solid rgb(255, 255, 255)">Login with GitHub</button>
       </form>
       <p class="mt-4">New User? <a href="/auth/register">Register</a></p>
       <p>Forgot Password? <a href="/auth/forgot">Reset</a></p>

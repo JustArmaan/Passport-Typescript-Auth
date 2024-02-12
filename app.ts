@@ -3,8 +3,12 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import path from "path";
 import passportMiddleware from './middleware/passportMiddleware';
+import passportGitHubStrategy from './middleware/passportStrategies/githubStrategy';
+import dotenv from 'dotenv'; 
+dotenv.config();
 
-const port = process.env.port || 8000;
+
+const port = process.env.PORT || 8000;
 
 const app = express();
 
@@ -25,6 +29,7 @@ app.use(
 
 import authRoute from "./routes/authRoute";
 import indexRoute from "./routes/indexRoute";
+import githubAuthRoutes from "./routes/githubAuthRoutes";
 
 // Middleware for express
 app.use(express.json());
@@ -46,6 +51,7 @@ app.use((req, res, next) => {
 
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
+app.use("/auth/github", githubAuthRoutes);
 
 app.listen(port, () => {
   console.log(`🚀 Server has started on port ${port}`);
