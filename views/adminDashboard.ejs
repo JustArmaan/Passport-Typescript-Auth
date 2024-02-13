@@ -1,12 +1,20 @@
 <h1>Dashboard</h1>
 <p>Admin: <%= user.name %></p>
 <p>Current Sessions:</p>
-<div>
-                <form method="POST" action="">
-                    <p>sessionID:</p>
-                    <p>userID:</p>
-                    <button>Revoke Session </button>
-                </form>
-</div>
+
+<% if (session && session.length > 0) { %>
+    <div>
+        <% for(let i = 0; i < session.length; i++){  %>
+            <form method="POST" action="/admin/revokeSessions/<%= session[i].sessionID %>">
+            <p>Session ID: <%= session[i].sessionID %></p>
+            <p>User ID: <%= session[i].userID %></p>
+            <button>Revoke Session</button>
+        </form>
+        <% }; %>
+    </div>
+<% } else { %>
+    <p>No active sessions.</p>
+<% } %>
+
 <br>
 <a href="/auth/logout" class="btn btn-secondary">Logout</a>

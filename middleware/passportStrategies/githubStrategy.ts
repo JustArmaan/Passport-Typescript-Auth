@@ -7,12 +7,20 @@ import {
     getUserByEmailIdAndPassword,
     getUserById,
   } from "../../controllers/userController";
+import dotenv from 'dotenv'; 
+dotenv.config();
 
+if (typeof process.env.GITHUB_CLIENT_ID  !== "string" ) {
+    throw Error("Github Client ID is not valid")
+} 
+if (typeof process.env.GITHUB_CLIENT_SECRET  !== "string" ) {
+    throw Error("Github Client Secret is not valid")
+}
 import { userModel } from '../../models/userModel'
 const githubStrategy: GitHubStrategy = new GitHubStrategy(
     {
-        clientID: "d608f20512e664cc1807",
-        clientSecret: "d9b01210e3b210cb7907177bee83bbe99121054a",
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: "http://localhost:8000/auth/github/callback",
         passReqToCallback: true,
     },

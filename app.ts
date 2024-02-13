@@ -30,6 +30,8 @@ app.use(
 import authRoute from "./routes/authRoute";
 import indexRoute from "./routes/indexRoute";
 import githubAuthRoutes from "./routes/githubAuthRoutes";
+import revokesession from "./routes/revokesession";
+
 
 // Middleware for express
 app.use(express.json());
@@ -52,7 +54,7 @@ app.use((req, res, next) => {
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
 app.use("/auth/github", githubAuthRoutes);
-
+app.use("/admin", revokesession )
 app.listen(port, () => {
   console.log(`🚀 Server has started on port ${port}`);
 });
